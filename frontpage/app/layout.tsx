@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "./components/navbar/Navbar";
+import BackToTop from "./components/items/BackToTop";
 // import localFont from "next/font/local";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <Navbar/>
         {children}
+        <BackToTop/>
       </body>
     </html>
   );

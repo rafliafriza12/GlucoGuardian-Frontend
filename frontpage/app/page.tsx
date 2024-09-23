@@ -4,8 +4,13 @@ import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import { TypeAnimation } from "react-type-animation";
 
 export default function Home() {
+  const handleClick = (): void => {
+    window.localStorage.setItem("index", "1");
+  };
+
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -20,7 +25,21 @@ export default function Home() {
         <div className="drop" data-aos={"fade-up"} data-aos-duration={"1000"}>
           <div className=" bg-[#EEEEEE] flex items-center gap-2 py-2 px-5 relative rounded-3xl">
             <h5 className=" font-medium">
-              Welcome To <span className=" font-bold">GG</span>
+              Welcome To{" "}
+              <TypeAnimation
+                sequence={[
+                  // Same substring at the start will only be typed out once, initially
+                  "GlucoGuardian",
+                  1000, // wait 1s before replacing "Mice" with "Hamsters"
+                  "",
+                  1000,
+                ]}
+                wrapper="span"
+                speed={50}
+                className=" font-bold"
+                repeat={Infinity}
+              />
+              {/* <span className=" font-bold">GG</span> */}
             </h5>
             <Image src={"/img/star.png"} alt="star" width={20} height={20} />
           </div>
@@ -56,7 +75,8 @@ export default function Home() {
           data-aos-delay={"600"}
         >
           <Link
-            href={"#"}
+            onClick={() => handleClick()}
+            href={"/pages/diagnose"}
             className=" bg-[#1B40FF] py-4 px-32 rounded-3xl text-white font-semibold"
           >
             DIAGNOSIS
@@ -264,16 +284,23 @@ export default function Home() {
             className="w-[69%] flex justify-between items-center h-full bg-transparent rounded-lg border-[1px] border-black px-10"
           >
             <div className=" w-[87%] h-full flex flex-col gap-5 items-start justify-center text-[#33363E]">
-              <h1 className=" text-3xl font-semibold">Managing a Healthy Eating Pattern</h1>
-              <p className=" w-full font-medium">A balanced diet is key to controlling blood sugar. High-fiber, low-sugar, and low-fat foods help stabilize levels. Eating fruits, vegetables, whole grains, and lean proteins supports diabetes management and prevents complications.</p>
+              <h1 className=" text-3xl font-semibold">
+                Managing a Healthy Eating Pattern
+              </h1>
+              <p className=" w-full font-medium">
+                A balanced diet is key to controlling blood sugar. High-fiber,
+                low-sugar, and low-fat foods help stabilize levels. Eating
+                fruits, vegetables, whole grains, and lean proteins supports
+                diabetes management and prevents complications.
+              </p>
             </div>
             <div className=" w-[10%] h-full relative overflow-hidden">
-                <Image 
-                  src={'/img/1.png'}
-                  alt="1"
-                  layout="fill"
-                  objectFit="fill"
-                />
+              <Image
+                src={"/img/1.png"}
+                alt="1"
+                layout="fill"
+                objectFit="fill"
+              />
             </div>
           </div>
 
@@ -283,7 +310,7 @@ export default function Home() {
             className=" w-[30%] h-full bg-transparent rounded-lg overflow-hidden border-[1px] border-black relative"
           >
             <Image
-              src={'/img/food.png'}
+              src={"/img/food.png"}
               alt="food"
               layout="fill"
               objectFit="cover"
@@ -299,16 +326,23 @@ export default function Home() {
             className="w-[69%] flex justify-between items-center h-full bg-transparent rounded-lg border-[1px] border-black px-10"
           >
             <div className=" w-[85%] h-full flex flex-col gap-5 items-start justify-center text-[#33363E]">
-              <h1 className=" text-3xl font-semibold">Regular Physical Activity</h1>
-              <p className=" w-full font-medium">Exercise helps the body use insulin more effectively and can help control weight. The general recommendation is to do moderate physical activity such as brisk walking, cycling, or swimming for at least 150 minutes per week.</p>
+              <h1 className=" text-3xl font-semibold">
+                Regular Physical Activity
+              </h1>
+              <p className=" w-full font-medium">
+                Exercise helps the body use insulin more effectively and can
+                help control weight. The general recommendation is to do
+                moderate physical activity such as brisk walking, cycling, or
+                swimming for at least 150 minutes per week.
+              </p>
             </div>
             <div className=" w-[15%] h-full relative overflow-hidden">
-                <Image 
-                  src={'/img/2.png'}
-                  alt="1"
-                  layout="fill"
-                  objectFit="fill"
-                />
+              <Image
+                src={"/img/2.png"}
+                alt="1"
+                layout="fill"
+                objectFit="fill"
+              />
             </div>
           </div>
 
@@ -318,7 +352,7 @@ export default function Home() {
             className=" w-[30%] h-full bg-transparent rounded-lg overflow-hidden border-[1px] border-black relative"
           >
             <Image
-              src={'/img/gym.png'}
+              src={"/img/gym.png"}
               alt="food"
               layout="fill"
               objectFit="cover"
@@ -334,16 +368,24 @@ export default function Home() {
             className="w-[69%] flex justify-between items-center h-full bg-transparent rounded-lg border-[1px] border-black px-10"
           >
             <div className=" w-[80%] h-full flex flex-col gap-5 items-start justify-center text-[#33363E]">
-              <h1 className=" text-3xl font-semibold">Managing Blood Sugar Levels</h1>
-              <p className=" w-full font-medium">Maintaining blood sugar within a healthy range is crucial for preventing and managing diabetes. Regular tests like fasting glucose and hemoglobin A1c can track management effectiveness, allowing timely adjustments in diet, exercise, or medication to prevent long-term complications.</p>
+              <h1 className=" text-3xl font-semibold">
+                Managing Blood Sugar Levels
+              </h1>
+              <p className=" w-full font-medium">
+                Maintaining blood sugar within a healthy range is crucial for
+                preventing and managing diabetes. Regular tests like fasting
+                glucose and hemoglobin A1c can track management effectiveness,
+                allowing timely adjustments in diet, exercise, or medication to
+                prevent long-term complications.
+              </p>
             </div>
             <div className=" w-[18%] h-full relative overflow-hidden">
-                <Image 
-                  src={'/img/3.png'}
-                  alt="1"
-                  layout="fill"
-                  objectFit="fill"
-                />
+              <Image
+                src={"/img/3.png"}
+                alt="1"
+                layout="fill"
+                objectFit="fill"
+              />
             </div>
           </div>
 
@@ -353,7 +395,7 @@ export default function Home() {
             className=" w-[30%] h-full bg-transparent rounded-lg overflow-hidden border-[1px] border-black relative"
           >
             <Image
-              src={'/img/tes-darah.png'}
+              src={"/img/tes-darah.png"}
               alt="food"
               layout="fill"
               objectFit="cover"
