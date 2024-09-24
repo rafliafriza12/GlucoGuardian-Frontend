@@ -2,14 +2,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import useLocalStorageState from "@/app/hooks/useLocalStorage";
 
 const Navbar: React.FC = () => {
     const [isScrollDown, setIsScrollDown] = useState<boolean>(false);
     const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
-    const [index, setIndex] = useState<number>(() :number =>  {
-        const indexValue: string | null = window.localStorage?.getItem("index");
-        return indexValue === null ? 0 : +indexValue;
-    });
+    const [index, setIndex] = useLocalStorageState<number>("index", 0);
 
     const handleScroll = () => {
           const currentScrollPos: number = window.pageYOffset;
@@ -44,7 +42,7 @@ const Navbar: React.FC = () => {
     useEffect(() => {
        navbarHandler();
         // indexHandler();
-    },[prevScrollPos, window.location.pathname]);
+    },[prevScrollPos]);
 
     return(
         <div className={`py-6 w-screen backdrop-blur-md flex justify-center items-center fixed z-[10] ${isScrollDown ? '-top-40': 'top-0'} left-0 duration-[0.8s] text-[#33363E]`}>
