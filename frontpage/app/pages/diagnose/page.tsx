@@ -5,11 +5,9 @@ import Image from "next/image";
 import Result from "./result/page";
 import Link from "next/link";
 import AOS from "aos";
-import { useRouter } from "next/router";
 import API from "@/app/utils/API";
 import { error } from "console";
 const Diagnose: React.FC = () => {
-  const navigation: any = useRouter();
   const [indexPageDiagnose, setIndexPageDiagnose] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // VALUE CONSULTANT DATA
@@ -102,8 +100,8 @@ const Diagnose: React.FC = () => {
     setIsLoading(true)
     API.post('/user-glucose/diagnose', dataDiagnose).then((res: any) => {
       console.log(res.data);
-      setIsLoading(false);
-      navigation.push('/pages/diagnose/result');
+      setIsLoading(false)
+      window.location.replace('/pages/diagnose/result');
     }).catch((error: any) => {  // Perbaikan di sini
       console.log(error);
       setIsLoading(false)
