@@ -2,10 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 
 // Membuat instance API dengan konfigurasi dasar
 const API = axios.create({
-  baseURL: 'http://localhost:5000',
-  headers: {
-    "ngrok-skip-browser-warning": "true",
-  },
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
 });
 
 // Menambahkan interceptor untuk request
