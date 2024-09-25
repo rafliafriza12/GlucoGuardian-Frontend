@@ -68,7 +68,7 @@ const SugarTestCard: React.FC<SugarTestCardProps> = ({ item }) => {
           </table>
         </div>
 
-        <div className=" w-full flex items-start gap-3 py-3">
+        {/* <div className=" w-full flex items-start gap-3 py-3">
           <div className=" pt-2">
             <Circle size={10} color="#1B40FF" />
           </div>
@@ -79,7 +79,7 @@ const SugarTestCard: React.FC<SugarTestCardProps> = ({ item }) => {
             as adjusting your diet and exercising regularly to prevent the
             development of diabetes.
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

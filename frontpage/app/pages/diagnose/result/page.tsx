@@ -1,27 +1,66 @@
+"use client";
 import Image from "next/image";
 import { SquareCheck } from "lucide-react";
 import SugarTestCard from "@/app/components/items/SugarTestCard";
 import { SugarTest } from "@/app/interfaces";
-import Aos from "aos";
+import API from "@/app/utils/API";
+import { useState, useEffect } from "react";
+import AOS from "aos";
+import Loader from "@/app/components/items/Loader";
+
 const Result: React.FC = () => {
+  const [data, setData] = useState<any>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const getDataDiagnosis = () => {
+
+    API.get("/user-glucose/latest-diagnosis")
+      .then((res: any) => {
+        setData(res.data.data);
+        console.log(res.data);
+        setIsLoading(false);
+      })
+      .catch((err: any) => {
+        console.log(err)
+        setIsLoading(false);
+      });
+  };
   const items: SugarTest[] = [
     {
       title: "Fasting Blood Glucose",
-      testResult: 90,
+      testResult: data.fastingBloodGlucose,
     },
     {
       title: "Random Blood Sugar Test",
-      testResult: 120,
+      testResult: data.randomBloodSugarTest,
     },
     {
       title: "Oral Glucose Tolerance Test (2-Hour Postprandial)",
-      testResult: 130,
+      testResult: data.oralGlucose,
     },
   ];
 
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+    getDataDiagnosis();
+    console.log(data);
+  }, []);
+
+  const date = new Date(data?.date);
+  const formattedDate = date.toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  if(isLoading){
+    return <Loader/>
+  }
+
   return (
     <div className=" w-full relative">
-        <div className=" absolute z-[-5] h-screen w-screen top-[5%]">
+      <div className=" absolute z-[-5] h-screen w-screen top-[5%]">
         <Image
           src={"/img/vektor.png"}
           alt="vektor"
@@ -30,34 +69,34 @@ const Result: React.FC = () => {
           className=" relative"
         />
       </div>
-        <div className=" absolute z-[-5] h-screen w-screen top-[27.5%]">
-          <Image
-            src={"/img/vektor.png"}
-            alt="vektor"
-            layout="fill"
-            objectFit="cover"
-            className=" relative"
-          />
-        </div>
-        <div className=" absolute z-[-5] h-screen w-screen top-[50%]">
-          <Image
-            src={"/img/vektor.png"}
-            alt="vektor"
-            layout="fill"
-            objectFit="cover"
-            className=" relative"
-          />
-        </div>
-        <div className=" absolute z-[-5] h-screen w-screen top-[73%]">
-          <Image
-            src={"/img/vektor.png"}
-            alt="vektor"
-            layout="fill"
-            objectFit="cover"
-            className=" relative"
-          />
-        </div>
-        <div className="w-full h-[300vh] bg-gradient-to-t from-[#1B73FF]/80 via-[#1B73FF]/10 to-transparent absolute z-[-5] bottom-0"></div>
+      <div className=" absolute z-[-5] h-screen w-screen top-[27.5%]">
+        <Image
+          src={"/img/vektor.png"}
+          alt="vektor"
+          layout="fill"
+          objectFit="cover"
+          className=" relative"
+        />
+      </div>
+      <div className=" absolute z-[-5] h-screen w-screen top-[50%]">
+        <Image
+          src={"/img/vektor.png"}
+          alt="vektor"
+          layout="fill"
+          objectFit="cover"
+          className=" relative"
+        />
+      </div>
+      <div className=" absolute z-[-5] h-screen w-screen top-[73%]">
+        <Image
+          src={"/img/vektor.png"}
+          alt="vektor"
+          layout="fill"
+          objectFit="cover"
+          className=" relative"
+        />
+      </div>
+      <div className="w-full h-[300vh] bg-gradient-to-t from-[#1B73FF]/80 via-[#1B73FF]/10 to-transparent absolute z-[-5] bottom-0"></div>
       <div className=" mt-[15vh] w-full flex flex-col gap-24">
         {/* header */}
         <div
@@ -141,22 +180,45 @@ const Result: React.FC = () => {
             data-aos-delay={"300"}
             className=" relative"
           >
-            <h1 className=" font-bold text-9xl text-[#1B40FF]">Prediabetes</h1>
+            <h1 className=" w-full text-center px-14 font-bold text-9xl text-[#1B40FF]">
+              {data.diagnosisResult?.hypothesis === "Tidak Diabetes" &&
+                "NORMAL"}
+              {data.diagnosisResult?.hypothesis === "DM1" && "DIABETES TYPE 1"}
+              {data.diagnosisResult?.hypothesis === "DM2" && "DIABETES TYPE 2"}
+              {data.diagnosisResult?.hypothesis === "DMG" &&
+                " GESTASIONAL DIABETES"}
+            </h1>
             <div className=" absolute z-1 w-full h-[100px] bg-gradient-to-t from-white via-white/40 to-transparent bottom-0"></div>
           </div>
-          <p
+            {data.diagnosisResult?.hypothesis !== "Tidak diabetes" ? (
+              <p
+              data-aos={"fade-up"}
+              data-aos-duration={"1000"}
+              className=" w-[55%] text-center font-medium text-sm "
+            >
+              Based on your blood sugar test results, your glucose levels indicate
+              that you are in the <span className="font-bold">Diabetes</span> range. This means that while you do
+              not have diabetes yet, there is a risk of developing it in the
+              future if no action is taken. The symptoms you are experiencing may
+              be early signs of this condition. It is recommended that you consult
+              your doctor for further evaluation and to discuss lifestyle changes
+              that can help prevent the progression to diabetes.
+            </p>
+            ) : (
+              <p
             data-aos={"fade-up"}
             data-aos-duration={"1000"}
             className=" w-[55%] text-center font-medium text-sm "
           >
-            Based on your blood sugar test results, your glucose levels indicate
-            that you are in the prediabetes range. This means that while you do
-            not have diabetes yet, there is a risk of developing it in the
-            future if no action is taken. The symptoms you are experiencing may
-            be early signs of this condition. It is recommended that you consult
-            your doctor for further evaluation and to discuss lifestyle changes
-            that can help prevent the progression to diabetes.
+            Based on your blood sugar test results, your glucose levels are
+            within the <span className="font-bold">Normal</span> normal range. However, the symptoms you are experiencing
+            may be related to other health conditions that are not associated
+            with blood sugar levels. It is recommended that you consult your
+            doctor to investigate other possible causes of these symptoms.
           </p>
+            )}
+          
+          
         </div>
         {/* End oF Diagnosis */}
 
@@ -169,7 +231,7 @@ const Result: React.FC = () => {
           >
             <h1 className=" text-[#1B40FF] font-semibold text-xl">Name</h1>
             <div className=" w-full h-14 bg-[#1B40FF] px-7 flex items-center text-white font-bold text-xl rounded-lg">
-              tes
+              {data.fullName}
             </div>
           </div>
 
@@ -180,7 +242,7 @@ const Result: React.FC = () => {
           >
             <h1 className=" text-[#1B40FF] font-semibold text-xl">Age</h1>
             <div className=" w-full h-14 bg-[#1B40FF] px-4 flex items-center text-white font-bold text-xl rounded-lg">
-              14
+              {data.age}
             </div>
           </div>
 
@@ -193,7 +255,7 @@ const Result: React.FC = () => {
               Diagnosis Date
             </h1>
             <div className=" w-full h-14 bg-[#1B40FF] px-7 flex items-center text-white font-bold text-xl rounded-lg">
-              22 september 2024
+              {formattedDate}
             </div>
           </div>
         </div>
@@ -214,48 +276,117 @@ const Result: React.FC = () => {
             data-aos-duration={"1000"}
             className=" w-full grid grid-cols-2  p-10 gap-6 bg-[#1B40FF] text-white rounded-lg"
           >
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
-            <div className="w-full items-center flex  gap-3">
-              <SquareCheck color="#ffffff" />
-              <h1 className="font-semibold text-lg">
-                Testing asdfbaklsdbfakjlsdfkjs
-              </h1>
-            </div>
+            {!data.bodyBecomesThin && !data.urinatingALot && !data.gettingThirstyEasily && !data.tingling && !data.breakingBreath &&
+            !data.moreFourKilo && !data.dizziness && !data.obstacles && !data.coughing && !data.pregnant && !data.weak && !data.blurredVision && !data.vomiting
+            && !data.pale && !data.nausea && !data.wounds && (
+              <div className="w-full items-center flex  gap-3">
+                <h1 className="font-semibold text-lg">No Symptoms</h1>
+              </div>
+            )}
+
+            {data.bodyBecomesThin && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Body becomes thin</h1>
+              </div>
+            )}
+            {data.urinatingALot && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Urinating a lot</h1>
+              </div>
+            )}
+            {data.gettingThirstyEasily && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">
+                  Drinking a lot/getting thirsty easily
+                </h1>
+              </div>
+            )}
+            {data.tingling && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Tingling</h1>
+              </div>
+            )}
+            {data.breakingBreath && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Breaking breath</h1>
+              </div>
+            )}
+            {data.moreFourKilo && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">
+                  {"Having given birth to a baby >= 4 kg"}
+                </h1>
+              </div>
+            )}
+            {data.dizziness && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Dizziness</h1>
+              </div>
+            )}
+            {data.obstacles && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">
+                  Obstacles to the quality of husband and wife relationships in
+                  men
+                </h1>
+              </div>
+            )}
+            {data.coughing && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Coughing</h1>
+              </div>
+            )}
+            {data.pregnant && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Pregnant</h1>
+              </div>
+            )}
+            {data.weak && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Weak</h1>
+              </div>
+            )}
+            {data.blurredVision && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Blurred</h1>
+              </div>
+            )}
+            {data.vomiting && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Vomiting</h1>
+              </div>
+            )}
+            {data.pale && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Pale</h1>
+              </div>
+            )}
+            {data.nausea && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Nausea</h1>
+              </div>
+            )}
+            {data.wounds && (
+              <div className="w-full items-center flex  gap-3">
+                <SquareCheck color="#ffffff" />
+                <h1 className="font-semibold text-lg">Wounds</h1>
+              </div>
+            )}
           </div>
         </div>
         {/* end of Symptoms */}
