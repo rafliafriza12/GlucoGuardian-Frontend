@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, } from "react";
+import Loader from "@/app/components/items/Loader";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Result from "./result/page";
@@ -101,7 +102,9 @@ const Diagnose: React.FC = () => {
     API.post('/user-glucose/diagnose', dataDiagnose).then((res: any) => {
       console.log(res.data);
       setIsLoading(false)
-      window.location.replace('/pages/diagnose/result');
+      if(!isLoading){
+        window.location.replace('/pages/diagnose/result');
+      }
     }).catch((error: any) => {  // Perbaikan di sini
       console.log(error);
       setIsLoading(false)
@@ -148,6 +151,10 @@ const Diagnose: React.FC = () => {
     handleDropDownDM();
     hanleDropDownGender();
   });
+
+  if(isLoading){
+    return <Loader/>;
+  }
 
   return (
     <div className=" w-full relative">
