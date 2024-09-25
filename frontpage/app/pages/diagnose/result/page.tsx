@@ -190,7 +190,7 @@ const Result: React.FC = () => {
             </h1>
             <div className=" absolute z-1 w-full h-[100px] bg-gradient-to-t from-white via-white/40 to-transparent bottom-0"></div>
           </div>
-            {data.diagnosisResult?.hypothesis !== "Tidak diabetes" ? (
+            {data.diagnosisResult?.hypothesis !== "Tidak Diabetes" ? (
               <p
               data-aos={"fade-up"}
               data-aos-duration={"1000"}
