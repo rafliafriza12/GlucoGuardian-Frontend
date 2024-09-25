@@ -3,18 +3,36 @@ import Image from "next/image";
 import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useEffect } from "react";
+import { useState,useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
 
 export default function Home() {
+  const [isSmallScreen, setIsSmallScreen] = useState<number>(0);
   const handleClick = (): void => {
     window.localStorage.setItem("index", "1");
   };
 
   useEffect(() => {
+    setIsSmallScreen(() => window.innerWidth);
     AOS.init();
     AOS.refresh();
-  }, []);
+  }, [isSmallScreen]);
+
+  if(isSmallScreen < 1024){
+    return (
+      <div className=" w-screen h-screen fixed z-20 bg-white flex flex-col justify-center items-center gap-5">
+         <div className="w-[40px] h-[40px] bg-transparent relative animate-spin">
+                <Image
+                src={'/img/logo.png'}
+                alt="logo"
+                layout="fill"
+                objectFit="cover"
+                />
+            </div>
+            <h1 className=" text-gray-500 font-semibold">Right now, only for desktop</h1>
+      </div>
+    );
+  }
 
   return (
     <div className=" w-full ">
