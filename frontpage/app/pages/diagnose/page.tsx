@@ -99,8 +99,8 @@ const Diagnose: React.FC = () => {
 
   const handleSubmit = (index: number) => {
     setIsLoading(true)
-    window.location.replace('/pages/diagnose/result');
     API.post('/user-glucose/diagnose', dataDiagnose).then((res: any) => {
+      window.location.replace('/pages/diagnose/result');
       console.log(res.data);
       setIsLoading(false)
     }).catch((error: any) => {  // Perbaikan di sini
