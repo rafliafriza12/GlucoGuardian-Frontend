@@ -103,7 +103,7 @@ const Diagnose: React.FC = () => {
     API.post('/user-glucose/diagnose', dataDiagnose).then((res: any) => {
       console.log(res.data);
       setIsLoading(false);
-      navigation.push('/diagnose/result');
+      navigation.push('/pages/diagnose/result');
     }).catch((error: any) => {  // Perbaikan di sini
       console.log(error);
       setIsLoading(false)
