@@ -101,6 +101,7 @@ const Diagnose: React.FC = () => {
     API.post('/user-glucose/diagnose', dataDiagnose).then((res: any) => {
       console.log(res.data);
       setIsLoading(false)
+      window.location.replace('/diagnose/result');
     }).catch((error: any) => {  // Perbaikan di sini
       console.log(error);
       setIsLoading(false)
@@ -745,13 +746,13 @@ const Diagnose: React.FC = () => {
 
         {/* Diagnose Button */}
         <div className=" w-full flex justify-center pb-24">
-          <Link
+          <button
             onClick={() => handleSubmit(1)}
-            href={"/pages/diagnose/result"}
+            // href={"/pages/diagnose/result"}
             className=" flex justify-center items-center hover:shadow-[0px_0px_10px_#ffffff] duration-500 w-[20%] py-2 text-white text-xl font-semibold bg-[#1B40FF] rounded-3xl"
           >
             <span>SUBMIT</span>
-          </Link>
+          </button>
         </div>
       </div>
     </div>
