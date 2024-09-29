@@ -3,11 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { TypeAnimation } from "react-type-animation";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 export default function Home() {
   const [isSmallScreen, setIsSmallScreen] = useState<number>(0);
+  // const [language, setLanguage] = useLocalStorage<any>("lang", "");
+  const test: any = localStorage.getItem("lang");
   const handleClick = (): void => {
     window.localStorage.setItem("index", "1");
   };
@@ -18,18 +21,21 @@ export default function Home() {
     AOS.refresh();
   }, [isSmallScreen]);
 
-  if(isSmallScreen < 1024){
+  
+  if (isSmallScreen < 1024) {
     return (
       <div className=" w-screen h-screen fixed z-20 bg-white flex flex-col justify-center items-center gap-5">
-         <div className="w-[40px] h-[40px] bg-transparent relative animate-spin">
-                <Image
-                src={'/img/logo.png'}
-                alt="logo"
-                layout="fill"
-                objectFit="cover"
-                />
-            </div>
-            <h1 className=" text-gray-500 font-semibold">Right now, only for desktop</h1>
+        <div className="w-[40px] h-[40px] bg-transparent relative animate-spin">
+          <Image
+            src={"/img/logo.png"}
+            alt="logo"
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
+        <h1 className=" text-gray-500 font-semibold">
+          Right now, only for desktop
+        </h1>
       </div>
     );
   }
@@ -43,7 +49,8 @@ export default function Home() {
         <div className="drop" data-aos={"fade-up"} data-aos-duration={"1000"}>
           <div className=" bg-[#EEEEEE] flex items-center gap-2 py-2 px-5 relative rounded-3xl">
             <h5 className=" font-medium">
-              Welcome To{" "}
+              {/* {language === "id" ? "Selamat Datang di " : "Welcome To "} */}
+              Welcome to{" "}
               <TypeAnimation
                 sequence={[
                   // Same substring at the start will only be typed out once, initially
