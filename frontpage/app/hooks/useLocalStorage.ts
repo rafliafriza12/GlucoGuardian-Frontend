@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-function useLocalStorageState<T>(key: string, defaultValue: T): [T, (value: T) => void] {
+export function useLocalStorage<T>(
+  key: string,
+  defaultValue: T
+): [T, (value: T) => void] {
   const [state, setState] = useState<T>(defaultValue);
-  
+
   // Hanya berfungsi di client-side
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -16,11 +19,13 @@ function useLocalStorageState<T>(key: string, defaultValue: T): [T, (value: T) =
   // Simpan state ke localStorage ketika ada perubahan state
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.localStorage.setItem(key, JSON.stringify(state));
+      try {
+        window.localStorage.setItem(key, JSON.stringify(state));
+      } catch (error) {
+        console.warn(`Error setting localStorage key "${key}":`, error);
+      }
     }
   }, [key, state]);
 
   return [state, setState];
 }
-
-export default useLocalStorageState;

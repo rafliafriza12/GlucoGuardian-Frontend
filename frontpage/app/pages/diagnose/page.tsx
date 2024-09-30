@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, } from "react";
+import Loader from "@/app/components/items/Loader";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Result from "./result/page";
@@ -99,6 +100,7 @@ const Diagnose: React.FC = () => {
   const handleSubmit = (index: number) => {
     setIsLoading(true)
     API.post('/user-glucose/diagnose', dataDiagnose).then((res: any) => {
+      window.location.replace('/pages/diagnose/result');
       console.log(res.data);
       setIsLoading(false)
     }).catch((error: any) => {  // Perbaikan di sini
@@ -147,6 +149,10 @@ const Diagnose: React.FC = () => {
     handleDropDownDM();
     hanleDropDownGender();
   });
+
+  if(isLoading){
+    return <Loader/>;
+  }
 
   return (
     <div className=" w-full relative">
@@ -745,13 +751,13 @@ const Diagnose: React.FC = () => {
 
         {/* Diagnose Button */}
         <div className=" w-full flex justify-center pb-24">
-          <Link
+          <button
             onClick={() => handleSubmit(1)}
-            href={"/pages/diagnose/result"}
+            // href={"/pages/diagnose/result"}
             className=" flex justify-center items-center hover:shadow-[0px_0px_10px_#ffffff] duration-500 w-[20%] py-2 text-white text-xl font-semibold bg-[#1B40FF] rounded-3xl"
           >
             <span>SUBMIT</span>
-          </Link>
+          </button>
         </div>
       </div>
     </div>
