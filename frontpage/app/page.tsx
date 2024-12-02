@@ -9,7 +9,6 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 
 export default function Home() {
   const [isSmallScreen, setIsSmallScreen] = useState<number>(0);
-  // const [language, setLanguage] = useLocalStorage<any>("lang", "");
   const handleClick = (): void => {
     window.localStorage.setItem("index", "1");
   };
